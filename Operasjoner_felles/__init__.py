@@ -1,0 +1,6 @@
+from Operasjoner_felles import feilmelding
+from Operasjoner_felles import kryptering
+from Operasjoner_felles import legge_til_nuller
+from Operasjoner_felles import poststed_finnes_ikke
+from Operasjoner_felles import poststed_hent
+from Operasjoner_felles import print_kontonummere
