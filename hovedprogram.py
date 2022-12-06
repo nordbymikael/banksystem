@@ -4,7 +4,7 @@ import Sjekking
 
 def start ():
     while True:
-        svar_start = input("################################################################################################\n\n\033[1mVelkommen til Mikhails bank.\033[0m\n\nHer kan du få full funksjonalitet tilgjengelig veldig fort.\n\nAlt du trenger er å logge inn på brukeren din og velge kontoen som du vil bruke, eller opprette en ny bruker.\nDu kan også legge til flere kontoer til en eksisterende bruker.\n\n\033[1mSkriv 1\033[0m for å opprette en ny bruker.\n\033[1mSkriv 2\033[0m for å logge inn på en eksisterende bruker.\n\033[1mSkriv 3\033[0m for å legge til kontoer på brukeren din.\n\033[1mSkriv 4\033[0m for å slette en konto på en eksisterende bruker.\n\033[1mSkriv 5\033[0m for å slette en bruker.\n\033[1mTrykk på Enter\033[0m for å avslutte programmet.\n") # startmelding
+        svar_start = input("################################################################################################\n\n\033[1mVelkommen til Mikaels bank.\033[0m\n\nHer kan du få full funksjonalitet og alt tilgjengelig veldig fort.\n\nAlt du trenger er å logge inn på brukeren din og velge kontoen som du vil bruke, eller opprette en ny bruker.\nDu kan også legge til flere kontoer på en eksisterende bruker.\n\n\033[1mSkriv 1\033[0m for å opprette en ny bruker.\n\033[1mSkriv 2\033[0m for å logge inn på en eksisterende bruker.\n\033[1mSkriv 3\033[0m for å legge til kontoer på brukeren din.\n\033[1mSkriv 4\033[0m for å slette en konto på en eksisterende bruker.\n\033[1mSkriv 5\033[0m for å slette en bruker.\n\033[1mTrykk på Enter\033[0m for å avslutte programmet.\n") # startmelding
 
         if svar_start == "1":
             Brukere.opprett_bruker() # opprett bruker

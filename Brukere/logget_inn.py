@@ -7,7 +7,7 @@ import Brukere
 def logget_inn_på_brukeren (svar_logg_inn_kontonummer, svar_logg_inn_fødselsnummer):
     while True:
         # startmelding
-        print(f"\n\n\n################################################################################################\n\nVelkommen til Mikael bank.\nDu har logget inn på kontoen din med kontonummeret {svar_logg_inn_kontonummer}.\nDu har nå følgende valgmuligheter:\n1: Sjekke saldo.\n2: Inntak.\n3: Uttak.\n4: Overføring.\n5: Vise all personlig informasjon som banken har lagret om deg.\n6: Sjekk all historikk som banken har lagret om kontoen din.\n\033[1mTrykk på Enter\033[0m for å logge ut av brukeren.\n")
+        print(f"\n\n\n################################################################################################\n\nVelkommen til Mikaels bank.\nDu har logget inn på kontoen din med kontonummeret {svar_logg_inn_kontonummer}.\nDu har nå følgende valgmuligheter:\n1: Sjekke saldo.\n2: Inntak.\n3: Uttak.\n4: Overføring.\n5: Vise all personlig informasjon som banken har lagret om deg.\n6: Sjekk all historikk som banken har lagret om kontoen din.\n\033[1mTrykk på Enter\033[0m for å logge ut av brukeren.\n")
         global svar_logget_inn_start
         svar_logget_inn_start = input("Vennligs velg en av valgmulighetene ovenfor: ")
 
