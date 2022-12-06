@@ -1,61 +1,52 @@
-import mysql.connector
-import sys
+import time
 import os
-current = os.path.dirname(os.path.realpath(__file__))
-parent = os.path.dirname(current)
-sys.path.append(parent)
-
-
-mydb = mysql.connector.connect(
-  host="localhost",
-  port =3306,
-  user="root",
-  password="root",
-  database="banksystem"
-)
-
-mycursor = mydb.cursor()
+import sys
+sys.path.append(os.getcwd())
+import Sjekking
+import Operasjoner_felles
+import Brukere
+import mysqlconnector
 
 def opprett_bruker ():
     global svar_opprett_bruker_fornavn # global på alle for at de skal kunne brukes senere i funksjonen som lagrer alt i MySQL databasen
     svar_opprett_bruker_fornavn = input("\nDu har begynt å opprette din konto.\nVennligst skriv ditt fornavn: ").capitalize() # capitalize() for at f.eks. mIKhaiL skal bli gjort om til stor forbokstav og resten små
 
-    if spesielletegn.sjekk_string_for_spesielle_tegn("alle tegn", svar_opprett_bruker_fornavn) == False and len(svar_opprett_bruker_fornavn) in range(1, 256): # sjekke om fornavn har ingen tall og om lengden er gyldig for MySQL (max 255 tegn)
+    if Sjekking.spesielle_tegn("alle tegn", svar_opprett_bruker_fornavn) == False and len(svar_opprett_bruker_fornavn) in range(1, 256): # sjekke om fornavn har ingen tall og om lengden er gyldig for MySQL (max 255 tegn)
         global svar_opprett_bruker_etternavn
         svar_opprett_bruker_etternavn = input("\nVennligst skriv ditt etternavn: ").capitalize() # capitalize() samme grunn som fornavn
 
-        if sjekk_string_for_spesielle_tegn("alle tegn", svar_opprett_bruker_etternavn) == False and len(svar_opprett_bruker_etternavn) in range(1, 256): # samme sjekk som fornavn
+        if Sjekking.spesielle_tegn("alle tegn", svar_opprett_bruker_etternavn) == False and len(svar_opprett_bruker_etternavn) in range(1, 256): # samme sjekk som fornavn
             global svar_opprett_bruker_fødselsnummer
             svar_opprett_bruker_fødselsnummer = input("\nVennligst skriv ditt fødselsnummer (format: 11 sifre): ")
 
-            if svar_opprett_bruker_fødselsnummer.isdigit() == True and len(svar_opprett_bruker_fødselsnummer) == 11 and fødselsnummer_sjekk_om_finnes(svar_opprett_bruker_fødselsnummer) == False: # sjekke om hele fødselsnummer er tall og er 11 lang, + sjekke om den finnes fra før 
+            if svar_opprett_bruker_fødselsnummer.isdigit() == True and len(svar_opprett_bruker_fødselsnummer) == 11 and Sjekking.fødselsnummer_sjekk_om_finnes(svar_opprett_bruker_fødselsnummer) == False: # sjekke om hele fødselsnummer er tall og er 11 lang, + sjekke om den finnes fra før 
                 global svar_opprett_bruker_postnummer
                 svar_opprett_bruker_postnummer = input("\nVennligst skriv inn ditt postnummer (format: 4 sifre): ")
 
-                if svar_opprett_bruker_postnummer.isdigit() == True and len(svar_opprett_bruker_postnummer) == 4 and poststed_sjekk_om_finnes(svar_opprett_bruker_postnummer) == False: # sjekke lengden til postnummer (4 sifre) + sjekk om hele er int + sjekk om poststed er definert for dette postnummeret
-                    poststed_finnes_ikke() # dersom poststedet ikke er definert for postnummeret: si ifra til brukeren og definer
+                if svar_opprett_bruker_postnummer.isdigit() == True and len(svar_opprett_bruker_postnummer) == 4 and Sjekking.poststed_sjekk_om_finnes(svar_opprett_bruker_postnummer) == False: # sjekke lengden til postnummer (4 sifre) + sjekk om hele er int + sjekk om poststed er definert for dette postnummeret
+                    Operasjoner_felles.poststed_finnes_ikke(svar_opprett_bruker_postnummer) # dersom poststedet ikke er definert for postnummeret: si ifra til brukeren og definer
                     opprett_bruker_etter_poststed() # gå videre i oppretting av brukeren
                     
-                elif svar_opprett_bruker_postnummer.isdigit() == True and len(svar_opprett_bruker_postnummer) == 4 and poststed_sjekk_om_finnes(svar_opprett_bruker_postnummer) == True: # dersom poststedet ble funnet
+                elif svar_opprett_bruker_postnummer.isdigit() == True and len(svar_opprett_bruker_postnummer) == 4 and Sjekking.poststed_sjekk_om_finnes(svar_opprett_bruker_postnummer) == True: # dersom poststedet ble funnet
                     opprett_bruker_etter_poststed() # gå videre i oppretting av brukeren
 
                 else:
-                    feilmelding()
+                    Operasjoner_felles.Operasjoner_felles.feilmelding()
 
             else:
-                feilmelding()
+                Operasjoner_felles.Operasjoner_felles.feilmelding()
 
         else:
-            feilmelding()
+            Operasjoner_felles.Operasjoner_felles.feilmelding()
             
     else:
-        feilmelding()
+        Operasjoner_felles.Operasjoner_felles.feilmelding()
 
 def opprett_bruker_etter_poststed ():
     global svar_opprett_bruker_gatenavn
     svar_opprett_bruker_gatenavn = input("\nVennligst skriv inn gatenavnet du bor på (format: Eksempelveien (bare bokstaver; ikke Eksempelveien 1 e.l.)): ").title() # title() for at alle ord skal få stor forbokstav
 
-    if sjekk_string_for_spesielle_tegn("alle tegn for adresser", svar_opprett_bruker_gatenavn) == False and len(svar_opprett_bruker_gatenavn) in range(1, 256): # sjekk om inneholder spesielle tegn og tall, men sjekker ikke for ' og annet, + sjekk lengde 1-255
+    if Sjekking.spesielle_tegn("alle tegn for adresser", svar_opprett_bruker_gatenavn) == False and len(svar_opprett_bruker_gatenavn) in range(1, 256): # sjekk om inneholder spesielle tegn og tall, men sjekker ikke for ' og annet, + sjekk lengde 1-255
         global svar_opprett_bruker_husnummer
         svar_opprett_bruker_husnummer = input("\nVennligst skriv inn husnummeret ditt (format: 1 (bare tall; ikke 1a)): ")
         
@@ -77,22 +68,23 @@ def opprett_bruker_etter_poststed ():
                         svar_bekreft = input("\033[1mSkriv Ja\033[0m for å opprette brukeren med følgende informasjon, \033[1meller skriv alt mulig annet\033[0m for å avbryte: ").capitalize()
                         
                         if svar_bekreft == "Ja": # bekreftelse på at du skrev alt riktig
-                            lagre_opprettet_bruker()
-                            mycursor.execute(f"SELECT KONTONUMMER FROM KONTOER WHERE FØDSELSNUMMER = {svar_opprett_bruker_fødselsnummer}") # spørring som velger kontonummeret på valgt fødselsnummer
-                            myresult = mycursor.fetchall()
-                            print(f"\n\033[1mDu har nå opprettet din bruker!\033[0m\nKontoen \033[1m{legge_til_nuller(myresult[0][0], 1)} ble automatisk opprettet\033[0m for brukeren din.\nVi overfører deg til første valgmulighet for at du kan logge inn på kontoen din.")
+                            Brukere.lagre_opprettet_bruker(svar_opprett_bruker_fødselsnummer, svar_opprett_bruker_fornavn, svar_opprett_bruker_etternavn, svar_opprett_bruker_postnummer, svar_opprett_bruker_gatenavn, svar_opprett_bruker_husnummer, svar_opprett_bruker_telefonnummer, svar_opprett_bruker_epostadresse, svar_opprett_bruker_pinkode)
+                            mysqlconnector.mycursor.execute(f"SELECT KONTONUMMER FROM KONTOER WHERE FØDSELSNUMMER = {svar_opprett_bruker_fødselsnummer}") # spørring som velger kontonummeret på valgt fødselsnummer
+                            myresult = mysqlconnector.mycursor.fetchall()
+                            time.sleep(1) # Databasen trenger litt tid for å lagre dataen jeg har opprettet, og får å velge det den trenger. Det kan oppstå en feilmelding uten venting.
+                            print(f"\n\033[1mDu har nå opprettet din bruker!\033[0m\nKontoen \033[1m{Operasjoner_felles.legge_til_nuller(myresult[0][0], 1)} ble automatisk opprettet\033[0m for brukeren din.\nVi overfører deg til første valgmulighet for at du kan logge inn på kontoen din.")
                         
                         else:
                             print("\n\033[1mDu har avbrutt opprettingen av kontoen din.\nVennligst start på nytt eller ta andre valg.\033[0m")
 
                     else:
-                        feilmelding()
+                        Operasjoner_felles.feilmelding()
 
             else:
-                feilmelding()
+                Operasjoner_felles.feilmelding()
 
         else:
-            feilmelding()
+            Operasjoner_felles.feilmelding()
 
     else:
-        feilmelding()
+        Operasjoner_felles.feilmelding()
