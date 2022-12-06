@@ -1,4 +1,5 @@
-Du må installere MAMP for å kunne kjøre en lokal MySQL server. 
+Du må installere MAMP for å kunne kjøre en lokal MySQL server (det er bare den man trenger, man trenger ikke Mac, Apache og PHP).
+Man kan leste ned MAMP fra denne nettsiden (https://www.mamp.info/en/windows/).
 Du må deretter gå inn på MAMP -> Preferences, og deretter velge port 3306 for MySQL (denne porten bruker jeg i programmet mitt).
 
 NB! Kjør MAMP før du gjør steget under.

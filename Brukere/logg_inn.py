@@ -13,7 +13,7 @@ def logg_inn (svar_start): # logger inn og velger svaralternativer fra starten (
         global svar_logg_inn_pinkode
         svar_logg_inn_pinkode = input("Vennligst skriv inn din pinkode: ")
 
-        if svar_logg_inn_pinkode.isdigit() == True and len(svar_logg_inn_pinkode) in range(4, 8, 2) and Sjekking.pinkode_sjekk_om_riktig(svar_logg_inn_fødselsnummer, svar_logg_inn_pinkode): # sjekker om pinkoden er riktig skrevet og stemmer med pinkoden til brukeren
+        if svar_logg_inn_pinkode.isdigit() == True and len(svar_logg_inn_pinkode) in range(4, 8, 2) and Sjekking.pinkode_sjekk_om_riktig(svar_logg_inn_fødselsnummer, svar_logg_inn_pinkode) == True: # sjekker om pinkoden er riktig skrevet og stemmer med pinkoden til brukeren
             
             if svar_start == "2" and Sjekking.count_kontonummere(svar_logg_inn_fødselsnummer) == True: # velge kontonummer og kontrollere at du skrev en av de som du fikk opp
                 global svar_logg_inn_kontonummer
